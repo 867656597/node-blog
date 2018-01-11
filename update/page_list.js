@@ -1,19 +1,16 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var api = require('./../api');
 var debug = require('debug')('node-blog:update');
 
 debug('读取新闻列别列表');
 
-var url = 'http://111.3.64.179';
-var pageOneUrl = '/_s58/639/list1.psp';
 
-
-var classList = [];
-
-var getCurrentList = function(pageUrl){
-	var nextHref;
-	console.log(pageUrl)
-	request(url + pageUrl,function(err,res){
+var page_list = function(url,callback){
+	var nextHref,
+		pageList = [];
+	console.log(url)
+	request(url,function(err,res){
 		if(err) return console.log('error:'+err)
 
 		var $ = cheerio.load(res.body.toString());
@@ -27,19 +24,21 @@ var getCurrentList = function(pageUrl){
 					title: title,
 					url: url
 				}
-				classList.push(item);
+				pageList.push(item);
+				// console.log('pageList:'+pageList)
 			}
 		})
 		//判断是否有下一页
-		nextHref = $('.page_nav .next').attr('href');
-		if(nextHref.indexOf('javascript')=='-1'){
-			getCurrentList(nextHref);
+		nextHref = $('.page_nav .next').attr('href'); 
+		if(nextHref&&nextHref.indexOf('javascript')=='-1'){
+			page_list(api.pulicUrl + nextHref);
 		}else{
-			console.log(classList)
+			console.log(pageList)
+			// callback(null,pageList)
 		}
-		//console.log(classList)
 	})
 
 }
-getCurrentList(pageOneUrl);
+
+exports.page_list = page_list
 
