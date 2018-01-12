@@ -73,7 +73,7 @@ exports.articleList = function (url, callback) {
 			url: url,
 		}
 		item.id = item.url&&item.url.split('/')[4];
-		item.id&&item.id!=''articleList.push(item);
+    if(item.id&&item.id.length>0) articleList.push(item);
 	})
 
     // 检查是否有下一页
