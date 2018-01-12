@@ -6,17 +6,15 @@ var debug = require('debug')('node-blog:update');
 debug('读取新闻列别列表');
 
 
-var page_list = function(url,callback){
-	var nextHref,
-		pageList = [];
-	console.log(url)
+var page_list = function(url,pageList,callback){
+	var nextHref;
 	request(url,function(err,res){
 		if(err) return console.log('error:'+err)
 
 		var $ = cheerio.load(res.body.toString());
 
 		$('.wp_article_list li').each(function(index){
-			if(index != 0){
+			if(true){
 				var linkDom = $(this).find('.Article_Title a').eq(0);
 				var title = linkDom.attr('title');
 				var url = linkDom.attr('href');
@@ -25,16 +23,14 @@ var page_list = function(url,callback){
 					url: url
 				}
 				pageList.push(item);
-				// console.log('pageList:'+pageList)
 			}
 		})
 		//判断是否有下一页
 		nextHref = $('.page_nav .next').attr('href'); 
 		if(nextHref&&nextHref.indexOf('javascript')=='-1'){
-			page_list(api.pulicUrl + nextHref);
+			page_list(api.pulicUrl + nextHref,pageList,callback);
 		}else{
-			console.log(pageList)
-			// callback(null,pageList)
+			callback(null,pageList)
 		}
 	})
 
