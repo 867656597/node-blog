@@ -83,7 +83,7 @@ exports.articleDetail = function (id, content, callback) {
       db.query('UPDATE `article_detail` SET `content`=? WHERE `id`=?', [content, id], callback);
     } else {
       // 添加文章
-      db.query('INSERT INTO `article_detail`(`id`, `content`) VALUES (?, ?, ?)', [id, content], callback);
+      db.query('INSERT INTO `article_detail`(`id`, `content`) VALUES (?, ?)', [id, content], callback);
     }
   });
 };
