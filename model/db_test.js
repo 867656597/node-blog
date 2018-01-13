@@ -8,10 +8,10 @@ debug('开始连接数据库');
 
 // 创建数据库连接
 var db = mysql.createConnection({
-  host:     '192.168.226.137',   // 数据库IP
+  host:     '111.230.227.212',   // 数据库IP
   port:     3306,          // 数据库端口
-  database: 'lanxi1',   // 数据库名称
-  user:     'root',        // 数据库用户名
+  database: 'tz-news',   // 数据库名称
+  user:     'yang',        // 数据库用户名
   password: '123456',            // 数据库密码
 });
 
