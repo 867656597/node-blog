@@ -38,9 +38,17 @@ async.series([
 	    }, done);
 	},
 
-	  // 依次读取文章的详细内容，并保存
+	// 依次读取文章的详细内容，并保存
 	function (done) {
-	    async.eachSeries(articleList, function (item, next) {
+		var list = [];
+		console.log('开始合并数组;')
+		for(var key in articleList){
+			list = list.concat(articleList[key])
+		}
+		console.log('合并完成');
+		console.log(list.length)
+	    async.eachSeries(list, function (item, next) {
+	    	if(item.url.split('.')[1] != 'psp') return next();
 	      save.isAericleExists(item.id, function (err, exists) {
 	        if (err) return next(err);
 
@@ -53,7 +61,7 @@ async.series([
 	          if (err) return next(err);
 	          save.articleDetail(item.id, ret.content, function (err) {
 	            if (err) return next(err);
-	            save.articleTags(item.id, ret.tags, next);
+	            return next();
 	          });
 	        });
 	    });
