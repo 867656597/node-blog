@@ -2,7 +2,8 @@
 var spawn = require('child_process').spawn;
 var cronJob = require('cron').CronJob;
 var config = require('./config');
-var path = require('path')
+var path = require('path');
+var express = require('express');
 
 
 
