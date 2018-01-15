@@ -1,6 +1,7 @@
 var debug = require('debug')('blog:update:save');
 var db = require('./../config').db;
 var async = require('async');
+var moment = require('moment'); //日期格式化模块
 
 /**
  * 保存文章分类
@@ -71,19 +72,21 @@ exports.articleList = function (class_id, list, callback) {
  * @param {String} content
  * @param {Function} callback
  */
-exports.articleDetail = function (id, content, callback) {
+exports.articleDetail = function (id, detail, callback) {
   debug('保存文章内容: %s', id);
 
   // 检查文章是否存在
   db.query('SELECT `id` FROM `article_detail` WHERE `id`=?', [id], function (err, data) {
     if (err) return callback(err);
-
+    var updateTime = moment().format('YYYY-MM-DD,hh:mm:ss');
     if (Array.isArray(data) && data.length >= 1) {
       // 更新文章
-      db.query('UPDATE `article_detail` SET `content`=? WHERE `id`=?', [content, id], callback);
+      db.query('UPDATE `article_detail` SET `content`=? WHERE `id`=?', [detail.content, id]);
+      db.query('UPDATE `article_list` SET `author`=?,`department`=?,`update_time`=?,`news_time`=? WHERE `id`=?', [detail.author,detail.department,updateTime,detail.date,id], callback);
     } else {
       // 添加文章
-      db.query('INSERT INTO `article_detail`(`id`, `content`) VALUES (?, ?)', [id, content], callback);
+      db.query('INSERT INTO `article_detail`(`id`, `content`) VALUES (?, ?)', [id, detail.content]);
+       db.query('UPDATE `article_list` SET `author`=?,`department`=?,`create_time`=?,`news_time`=? WHERE `id`=?', [detail.author,detail.department,updateTime,detail.date,id], callback);
     }
   });
 };

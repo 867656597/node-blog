@@ -1,7 +1,7 @@
 var async = require('async');
-var config = require('./config');
-var read = require('./update/read');
-var save = require('./model/index');
+var config = require('./../config');
+var read = require('./read');
+var save = require('./../model/index');
 var debug = require('debug')('blog:update:all');
 
 
@@ -54,12 +54,12 @@ async.series([
 
 	        if (exists) {
 	          debug('文章已存在：%s', item.url);
-	          return next();
+	          //return next();
 	        }
 
 	        read.articleDetail(item.url, function (err, ret) {
 	          if (err) return next(err);
-	          save.articleDetail(item.id, ret.content, function (err) {
+	          save.articleDetail(item.id, ret, function (err) {
 	            if (err) return next(err);
 	            return next();
 	          });

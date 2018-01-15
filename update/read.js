@@ -124,12 +124,11 @@ exports.articleDetail = function (url, callback) {
 	articleDetail.department = remarksList.eq('2').text().split('：')[1];
 	articleDetail.date = remarksList.eq('3').text().split('：')[1];
 
-    // 获取文章内容
-    articleDetail.content = $('.entry').html().trim();
-    console.log(articleDetail.content.length)
-    if(articleDetail.content.length>15000){
-       articleDetail.content = '<h5>文章内容过长，暂不显示！如需查看请至<a href="'+url+'">此处查看</a></h5>'
-    }
+  // 获取文章内容
+  articleDetail.content = $('.entry').html().trim();
+  if(articleDetail.content.length>15000){
+      articleDetail.content = '<h5>文章内容过长，暂不显示！如需查看请至<a href="'+url+'">此处查看</a></h5>'
+  }
     // 返回结果
     callback(null, articleDetail);
   });

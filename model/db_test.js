@@ -2,18 +2,13 @@ var request = require('request');
 var cheerio = require('cheerio');
 var mysql = require('mysql');
 var debug = require('debug')('node-blog:update');
+var config = require('./../config')
 
 
 debug('开始连接数据库');
 
 // 创建数据库连接
-var db = mysql.createConnection({
-  host:     '111.230.227.212',   // 数据库IP
-  port:     3306,          // 数据库端口
-  database: 'tz-news',   // 数据库名称
-  user:     'yang',        // 数据库用户名
-  password: '123456',            // 数据库密码
-});
+var db = config.db;
 
 // 显示所有数据表
 db.query('show tables', function (err, tables) {
